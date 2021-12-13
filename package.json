@@ -1,0 +1,12 @@
+{
+  "name": "ci-spell-check",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "spell-check": "cspell lint -c .cspell.json --show-suggestions -r . '**/*'"
+  },
+  "devDependencies": {
+    "cspell": "^5.13.3"
+  }
+}
