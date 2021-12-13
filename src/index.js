@@ -1,1 +1,1 @@
-const hello = (name) => console.log(`hello, ${name}`);
+const helloo = (name) => console.log(`hello, ${name}`);
