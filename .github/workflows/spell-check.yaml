@@ -1,19 +1,29 @@
 name: review-on-push
 
-on: push
+on: [pull_request]
 
 jobs:
   spell-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # 差分取得のために全てのブランチを取得する
 
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
 
+      - uses: reviewdog/action-setup@v1
+      - run: reviewdog -version
+
       - name: Install Dependencies
         run: yarn install
 
       - name: execute spell-check
-        run: yarn spell-check
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git diff remotes/origin/$GITHUB_BASE_REF --name-only \
+            | yarn spell-check \
+            | reviewdog -level=warning -efm="%f:%l:%c - %m" -reporter=github-pr-review
