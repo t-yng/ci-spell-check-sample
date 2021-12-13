@@ -1,0 +1,21 @@
+name: review-on-push
+
+on: push
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Install Dependencies
+        run: yarn install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.AUTH_TOKEN_FOR_GITHUB_PKG }}
+
+      - name: execute spell-check
+        run: yarn spell-check
